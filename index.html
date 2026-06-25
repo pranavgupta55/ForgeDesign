@@ -7,36 +7,22 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-layers" aria-hidden="true">
-    <div class="grid"></div>
-    <div class="vignette"></div>
-    <div class="noise"></div>
-  </div>
-
   <header id="topbar">
     <div class="tb-left">
       <span class="brand">Forge <span class="brand-mark">Design</span></span>
     </div>
     <div class="tb-center">
-      <div class="view-toggle" id="view-toggle">
-        <div class="pill"></div>
-        <button class="active" data-idx="0">Graph</button>
-        <button data-idx="1">Chat</button>
-        <button data-idx="2">Copy</button>
-      </div>
+      <button class="nav-btn active" data-target="overview">Overview</button>
+      <button class="nav-btn" data-target="typography">Typography</button>
+      <button class="nav-btn" data-target="colors">Color Palette</button>
+      <button class="nav-btn" data-target="components">Components</button>
     </div>
     <div class="tb-right">
-      <button class="tb-btn">Docs</button>
-      <button class="tb-btn">Source</button>
+      <a class="tb-link" href="https://github.com/pranavgupta55/ForgeDesign" target="_blank" rel="noopener noreferrer">
+        Source <span class="arr">↗</span>
+      </a>
     </div>
   </header>
-
-  <nav id="section-nav" aria-label="Section navigation">
-    <a href="#overview"   data-target="overview"   class="active"><span class="num">01</span><span>Overview</span></a>
-    <a href="#typography" data-target="typography"><span class="num">02</span><span>Typography</span></a>
-    <a href="#colors"     data-target="colors"><span class="num">03</span><span>Color Palette</span></a>
-    <a href="#components" data-target="components"><span class="num">04</span><span>Components</span></a>
-  </nav>
 
   <main>
     <section id="overview" class="hero">
@@ -46,15 +32,10 @@
       </div>
       <h1>Forge <span class="accent">Design</span></h1>
       <p class="lede">
-        A tactical, editorial aesthetic for the Forge skill platform. Sharp boxes,
-        deep plums, and a saturated red that punches through. This page is a living
-        token reference — typography, color, and the primitive components that
-        compose the rest of the system.
+        A clean, minimalist aesthetic for all Forge interfaces. This page acts as
+        a living design system, showcasing the built-in design elements, layout
+        primitives, and typography pairings.
       </p>
-      <div class="hero-badges">
-        <span class="badge red">Version 0.1.0</span>
-        <span class="badge dim">Static HTML</span>
-      </div>
     </section>
 
     <section id="typography">
@@ -84,33 +65,38 @@
     <section id="colors">
       <div class="eyebrow">
         <span class="title">Color Palette</span>
-        <span class="count">5 Tokens · Plum / Red</span>
+        <span class="count">6 Tokens · Plum / Red</span>
       </div>
       <div class="swatch-grid">
         <div class="swatch">
-          <div class="chip" style="background:#BF2A45"></div>
+          <div class="chip" style="background:#CB2943"></div>
           <span class="label">Accent Red</span>
-          <span class="hex">#BF2A45</span>
+          <span class="hex">#CB2943</span>
         </div>
         <div class="swatch">
-          <div class="chip" style="background:#8C1642"></div>
+          <div class="chip" style="background:#811339"></div>
           <span class="label">Rouge Dim</span>
-          <span class="hex">#8C1642</span>
+          <span class="hex">#811339</span>
         </div>
         <div class="swatch">
-          <div class="chip" style="background:#590C3E"></div>
+          <div class="chip" style="background:#530B32"></div>
           <span class="label">Deep Plum</span>
-          <span class="hex">#590C3E</span>
+          <span class="hex">#530B32</span>
         </div>
         <div class="swatch">
-          <div class="chip" style="background:#261126"></div>
-          <span class="label">Background</span>
-          <span class="hex">#261126</span>
+          <div class="chip" style="background:#2D142C"></div>
+          <span class="label">Panel</span>
+          <span class="hex">#2D142C</span>
         </div>
         <div class="swatch">
-          <div class="chip" style="background:#F24444"></div>
+          <div class="chip" style="background:#EE4541"></div>
           <span class="label">Bright Red</span>
-          <span class="hex">#F24444</span>
+          <span class="hex">#EE4541</span>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#09030a"></div>
+          <span class="label">Background</span>
+          <span class="hex">#09030A</span>
         </div>
       </div>
     </section>
@@ -118,34 +104,9 @@
     <section id="components">
       <div class="eyebrow">
         <span class="title">Interactive Primitives</span>
-        <span class="count">Cards · Badges · Filters</span>
+        <span class="count">Badges · Filters · Icon Grid</span>
       </div>
       <div class="components-grid">
-        <div>
-          <div class="sub-rule">Data Grid</div>
-          <div class="data-stack">
-            <button class="data-card" data-tool="feature-toggle">
-              <span>Feature Toggle</span>
-            </button>
-            <button class="data-card" data-tool="inspector">
-              <span>Inspector</span>
-            </button>
-            <button class="data-card locked" disabled>
-              <span>LegacySystemConfig</span>
-              <span class="lock">[ locked ]</span>
-            </button>
-          </div>
-          <p class="note">Click a live card to summon the bottom-sheet inspector.</p>
-
-          <div class="sub-rule" style="margin-top:32px">Level Filter</div>
-          <div class="check-grid">
-            <label><input type="checkbox" checked /> <span>L1 · Surface</span></label>
-            <label><input type="checkbox" checked /> <span>L2 · Domain</span></label>
-            <label><input type="checkbox" /> <span>L3 · Internal</span></label>
-            <label><input type="checkbox" /> <span>L4 · Archived</span></label>
-          </div>
-        </div>
-
         <div>
           <div class="sub-rule">Badges</div>
           <div class="badge-row">
@@ -157,38 +118,46 @@
 
           <div class="sub-rule" style="margin-top:32px">Code Links</div>
           <div class="badge-row">
-            <a class="codelink" href="#" onclick="return false"><span class="arrow">↗</span>app/page.tsx</a>
+            <a class="codelink" href="#" onclick="return false"><span class="arrow">↗</span>index.html</a>
             <a class="codelink" href="#" onclick="return false"><span class="arrow">↗</span>styles.css</a>
             <a class="codelink" href="#" onclick="return false"><span class="arrow">↗</span>script.js</a>
+          </div>
+
+          <div class="sub-rule" style="margin-top:32px">Level Filter</div>
+          <div class="check-grid">
+            <label><input type="checkbox" checked /> <span>L1 · Surface</span></label>
+            <label><input type="checkbox" checked /> <span>L2 · Domain</span></label>
+            <label><input type="checkbox" /> <span>L3 · Internal</span></label>
+            <label><input type="checkbox" /> <span>L4 · Archived</span></label>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub-rule">Icon Buttons</div>
+          <div class="icon-grid" role="group" aria-label="Action buttons">
+            <button class="icon-btn" aria-label="Up">
+              <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+            </button>
+            <button class="icon-btn" aria-label="Check">
+              <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L20 6.5"/></svg>
+            </button>
+            <button class="icon-btn" aria-label="Share">
+              <svg viewBox="0 0 24 24"><path d="M5 14V11a5 5 0 0 1 5-5h8"/><path d="M14 2l4 4-4 4"/></svg>
+            </button>
+            <button class="icon-btn" aria-label="Down">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12l7 7 7-7"/></svg>
+            </button>
+            <button class="icon-btn" aria-label="Close">
+              <svg viewBox="0 0 24 24"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+            </button>
+            <button class="icon-btn" aria-label="Delete">
+              <svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+            </button>
           </div>
         </div>
       </div>
     </section>
   </main>
-
-  <div id="sheet-overlay"></div>
-  <aside id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
-    <div class="sheet-head">
-      <h3 id="sheet-title">Inspector</h3>
-      <button class="close" aria-label="Close panel">×</button>
-    </div>
-    <div class="sheet-body">
-      <div class="sheet-row">
-        <span class="badge red" id="sheet-badge">Layout Systems</span>
-        <span class="sub" id="sheet-sub">Interactive State</span>
-      </div>
-      <p id="sheet-body-text">
-        The inspector pane slides up from the bottom to provide extra context without
-        making you lose your place in the broader grid view. It is designed for
-        technical documentation and component deep dives.
-      </p>
-      <div class="files-label">Relevant Files</div>
-      <div class="files-row" id="sheet-files">
-        <a class="codelink" href="#" onclick="return false"><span class="arrow">↗</span>index.html</a>
-        <a class="codelink" href="#" onclick="return false"><span class="arrow">↗</span>styles.css</a>
-      </div>
-    </div>
-  </aside>
 
   <script src="script.js"></script>
 </body>
