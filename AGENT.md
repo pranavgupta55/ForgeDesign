@@ -1,151 +1,185 @@
 # AGENT.md — Forge Design build guide for AI agents
 
 You are about to build a dashboard in the Forge aesthetic. This repo is the
-template. Read this file, then read `styles.css` (tokens) and `index.html`
-(every component you'll need exists in it). View the PNGs in `screenshots/`
-before generating CSS so you anchor on the real look, not your guess of it.
+template. **Read this file → open `README.md` and look at every screenshot →
+read `styles.css :root` and `<section id="layout">` in `index.html` → then
+generate.** Anchoring on the screenshots first prevents you from re-deriving
+spacing, type, and color from text alone.
 
-## Build order (one-shot prompts work when you follow this)
+## Loading the visual ground truth
 
-1. **Copy `:root` from `styles.css` verbatim** — palette + font stack. Never
-   invent colors; the 8 tokens cover every state. Add new tokens only for
-   functional needs (success / warning), not visual variety.
-2. **Load fonts**: Inter 400-700, JetBrains Mono 400/500, Playfair 600-800.
-3. **Pick your primitives**, in this order, from `<section id="layout">`:
-   Stats Row → Filter Bar → Section Window → Stack Pairs → Action Cluster.
-4. **Wire behaviour** (bucket-shift below) only after the static look matches
-   the screenshots.
+The reference screenshots are embedded inline in `README.md` as
+`<img src="https://github.com/user-attachments/...">`. Fetch and view each
+one before writing any CSS — the user's GitHub user-attachments URLs are
+public and load directly. Order: overview, color palette, components,
+layout primitives, action clusters. If a screenshot disagrees with this
+file, **the screenshot wins** — update this file.
+
+## Build order
+
+Don't build sequentially; **compose from primitives**. Pick the page
+skeleton, then drop in named primitives by class. Every primitive you need
+already lives in `<section id="layout">` of `index.html` — copy the
+markup verbatim, don't reinvent it. Order of attention when you start a
+new page:
+
+1. `:root` tokens (palette + fonts) → copy verbatim.
+2. Page skeleton: `<header>` (h1 + meta strip) → `.summary` → `.projects`
+   filter bar → `<main>` with `.window-demo` sections.
+3. Drop the relevant primitive(s) into `<main>`.
+4. Wire interactivity last (filter toggles, action buttons).
 
 ## Visual identity — the non-negotiables
 
-These are the signals that make a UI feel "Forge". Break any of them and
-it stops looking like the template.
+These five rules make UI feel "Forge". Break any one and it stops matching
+the template.
 
-- **Sharp corners only.** `border-radius: 0` everywhere. Dots, badges,
-  buttons, cards — all squared.
-- **Plum-into-red dark palette.** `#09030A` background, never pure black.
-  Red is for action, plum is for surface.
-- **Dense, minimal chrome.** 1 px borders, no shadows, no gradients. Use
-  `border-subtle` (rgba 6 %) for low contrast, `border-strong` (14 %) for
-  emphasis.
-- **Type triad, strict roles.** Inter = UI / titles / body. JetBrains Mono =
-  IDs, hex, timestamps, hashes, eyebrow labels (uppercase + letter-spacing
-  ≥ 0.10 em). Playfair = hero numerals only (`stats-demo .n` and `hero h1`).
-  Italic Playfair is the wordmark accent.
-- **Status dots are 7×7 squares.** Never circles. Use the dot in section
-  heads, inline lists, anywhere a colored marker is needed.
+- **Sharp corners only.** `border-radius: 0` on every element — buttons,
+  chips, badges, cards, dots. The 7×7 status marker is a **square**, never
+  a circle.
+- **Plum-into-red dark palette.** Background is `#09030a` (never `#000`).
+  Reds carry action; plums carry surface. No bright greens or blues except
+  the single `--accent-green` token used for "done" status.
+- **Dense, minimal chrome.** 1 px borders, no shadows, no gradients, no
+  rounded fills. Two border weights: `--border-subtle` (rgba white 6 %) for
+  low-contrast separators, `--border-strong` (14 %) for emphasis dividers.
+- **Type triad, strict roles.**
+  - **Inter** — every title, body, UI label, and `<h1>` including the
+    hero. This is the default voice.
+  - **JetBrains Mono** — every ID, hash, hex, timestamp, count, and
+    uppercase-tracked eyebrow label. Mono carries data.
+  - **Playfair Display** — large serif numerals only (the `.n` in
+    `.stats-demo`) plus the italic-700 wordmark accent
+    (`.hero h1 .accent`). Never use it for body or row content.
+- **Square status dots, 7 × 7 px.** Used in section heads and inline
+  lists. Color from `--accent-red-bright | red | orange | green | plum`.
 
-## Tokens (read `styles.css :root` for canonical values)
+## Token reference (canonical values live in `styles.css :root`)
 
-| token | hex / value | use |
+Tiered the way the search guidance recommends — primitive at top, semantic
+below. **Don't redefine these; import the file or copy `:root` verbatim.**
+
+| token | value | role |
 |---|---|---|
-| `--bg-base`      | `#09030A` | page background |
-| `--bg-card`      | `#1A0A18` | header strips, chip surface |
-| `--bg-elev`      | `#2D142C` | hover-fill on interactive elements |
-| `--accent-red`        | `#CB2943` | primary brand, blocked, project pill |
+| `--bg-base`           | `#09030a` | page background |
+| `--bg-card`           | `#1a0a18` | header strips, chip surface |
+| `--bg-elev`           | `#2D142C` | hover fill on interactive elements |
+| `--bg-elev-2`         | `#3a1c38` | deepest surface (rare) |
+| `--accent-red`        | `#CB2943` | primary, project pill |
 | `--accent-red-bright` | `#EE4541` | active status, hover stroke |
-| `--accent-red-dim`    | `#811339` | secondary outlines |
-| `--accent-red-deep`   | `#530B32` | danger fill (purge hover) |
-| `--accent-green`      | `#73C990` | done / passing |
-| `--accent-orange`     | `#C87A3A` | pending / custom / no-project |
-| `--text-main / dim / mute` | `#ECE6DC / #9B8A92 / #5A4A55` | text hierarchy |
+| `--accent-red-dim`    | `#811339` | secondary outlines, chip borders |
+| `--accent-red-deep`   | `#530B32` | danger fill (purge-button hover) |
+| `--accent-green`      | `#73C990` | done / success |
+| `--accent-orange`     | `#C87A3A` | pending, custom tag, no-project |
+| `--text-main / dim / mute` | `#ece6dc / #9b8a92 / #5a4a55` | text tiers |
 
-## Components — what each is for
+## Spacing & motion
 
-Every primitive ships as both **HTML** in `index.html` and **CSS** in
-`styles.css`. Copy the markup, don't re-derive.
+- **Gap scale (px):** `4 / 7 / 14 / 20 / 28`. 14 is the row default; 4 is
+  for tightly-coupled neighbours (day ↔ time); 28 is for breathing room
+  (session ↔ id). Don't introduce new gaps; pick from this list.
+- **Padding:** rows use `16px 16px`; section heads use `12px 16px`;
+  buttons fit content with `0` padding (size set by `width`/`height`).
+- **Border width:** 1 px everywhere. Never 2 px.
+- **Animation curve:** `cubic-bezier(0.4, 0, 0.2, 1)`. Used for
+  `slide-down` (section entry) and `fade-in` (`<main>` entry). No bounce,
+  no spring.
 
-- **Stats Row** (`.stats-demo`). Big serif numerals + uppercase labels with
-  1 px right-borders. Drive counts from state; color the numeral by status,
-  not the label.
-- **Bookended Filter Bar** (`.filter-bar-demo`). `[SELECT ALL]` / centered
-  chips / `[SELECT NONE]`. Chips support a `.custom` orange variant for
-  cross-cutting tags. Bookends sync with chip state — see `script.js`.
-- **Section Window** (`.window-demo`). Bordered card. Header strip is
-  `[dot] label .................. count`. Below the strip: a mono
-  `.row-header-demo` with column captions, then `.row-demo`s.
-- **Data Row** (`.row-demo`). 13-track grid (7 content + 6 explicit gap
-  tracks). Cells that need a trailing vertical divider must stretch
-  (`align-self: stretch`). Divider is a `::after` pseudo at `right: -7px;
-  top: 20 %; bottom: 20 %`.
-- **2 × 2 Action Cluster** (`.ac-cluster`). Four square icon buttons in a
-  flex-wrap layout, `gap: 1px` (= border width, so borders never overlap).
-  Icons are stroke-based SVGs — see Pitfall 1.
-- **Stack Pair** (`.stack-card`). Two-line stack: bold Inter title above
+## Components — what each is for + states
+
+Every primitive ships as **HTML** in `index.html` + **CSS** in
+`styles.css`. Copy the markup. States listed below are the only ones
+each primitive has — anything else is off-spec.
+
+- **Stats Row** (`.stats-demo`) — Playfair numerals + uppercase Inter
+  labels with 1 px right-borders. Drive counts from state. Numeral color
+  switches by status (`.n.active`, `.n.pending`, `.n.done`); the **label
+  stays mute** — never recolor the label.
+- **Bookended Filter Bar** (`.filter-bar-demo`) — `[SELECT ALL]` / centered
+  chips / `[SELECT NONE]`. Chips: default → hover → `.active`. Custom
+  variant `.filter-chip.custom` paints orange. Bookend buttons must sync
+  with chip state (all chips active → `Select all` active; none → `Select
+  none` active).
+- **Section Window** (`.window-demo`) — bordered card with `[dot] label
+  ........ count` header, mono `.row-header-demo` column captions, then
+  `.row-demo`s. Use one window per status bucket.
+- **Data Row** (`.row-demo`) — 13-track grid: 7 content + 6 explicit-gap
+  tracks. Cells with a trailing vertical divider (`.ac-cluster`, `.r-id`,
+  `.r-title`) must `align-self: stretch`. Divider is a `::after` pseudo at
+  `right: -7px; top: 20%; bottom: 20%`. Row hover fills with
+  `var(--accent-red-tint)`.
+- **2 × 2 Action Cluster** (`.ac-cluster`) — four 26×26 square icon buttons
+  in flex-wrap, `gap: 1px` (= border width, no overlap). States: default
+  → hover (bg-elev + accent-red-bright stroke) → `.disabled` (22 % opacity,
+  `pointer-events: none`, stays in slot — the cluster's footprint never
+  changes). `.act-done:hover` gets a green tint; `.act-purge:hover` gets
+  the `--accent-red-deep` danger fill.
+- **Stack Pair** (`.stack-card`) — two-line stack: bold Inter title above
   smaller mono ID. Use for any "primary label + secondary identifier"
-  pattern (title+sessionID, TOC+timestamp).
+  combo (title+sessionID, TOC+timestamp). Sizes to content
+  (`width: max-content`) — never apply `min-width`, see Pitfall 4.
+- **Status Dots** (`.dot-item`) — 7×7 square swatch + lowercase Inter
+  label. Six pre-defined colorways: `.dot-active / blocked / pending /
+  done / cancelled / archived`.
 
-## Behaviour — bucket-shift action buttons
+## Behaviour — bucket-shift action buttons (example)
 
-Match the live dashboard. Four icons in fixed positions (`↑ ✓ ↓ ⌫`); per-row
-enabled state depends on which bucket the row is in:
+This is the semantic the Tasks dashboard uses. Treat as a template for
+any 4-bucket workflow.
 
 | bucket | ↑ up | ✓ done | ↓ down | ⌫ purge |
 |---|---|---|---|---|
-| active   | — (top)        | → done    | → pending  | —              |
-| pending  | → active       | → done    | → archived | —              |
-| done     | → pending      | —         | → archived | —              |
-| archived | → pending      | —         | — (bottom) | → remove       |
+| active   | — (top)        | → done    | → pending  | —        |
+| pending  | → active       | → done    | → archived | —        |
+| done     | → pending      | —         | → archived | —        |
+| archived | → pending      | —         | — (bottom) | → remove |
 
-Disabled buttons stay in their slot at 22 % opacity. **The cluster's
-footprint never changes** — never collapse the grid when something is
-disabled.
+Disabled buttons keep their slot at 22 % opacity. **Never collapse the
+cluster when something is disabled** — the 53×53 footprint is part of the
+identity.
 
 ## Pitfalls — these all bit us; you will hit them too
 
-1. **Inline SVGs render as filled black shapes by default.** Every action
-   icon must carry `class="ic"` so the `svg.ic { stroke: currentColor;
-   fill: none; stroke-width: 1.75 }` rule applies. Easy way to spot the bug:
-   triangles where arrows should be.
-2. **`margin-left: -Npx` on a right-justified grid item is a visual no-op.**
-   The outer edge stays pinned to the track's right edge. To actually
-   shrink a column gap, restructure the grid into explicit-spacer columns
-   (`gap: 0` + dedicated track for each gap).
-3. **Setting `btn.textContent = '…'` for a loading state wipes the SVG
-   inside.** Use `btn.classList.add('pending')` and a CSS rule for the
-   visual instead.
+1. **Inline `<svg>` renders as filled black shapes by default.** Every
+   icon needs `class="ic"` so the `svg.ic { stroke: currentColor;
+   fill: none; stroke-width: 1.75 }` rule applies. Symptom: triangles
+   where arrows should be.
+2. **`margin-left: -Npx` on a right-justified grid item is a visual
+   no-op.** The outer edge stays pinned to the track's right edge. To
+   actually shrink a column gap, restructure into explicit-spacer columns
+   (`gap: 0` + dedicated 14 px (or 4 px / 28 px) track for each gap).
+3. **`btn.textContent = '…'` wipes the inline SVG inside a button.** Use
+   `btn.classList.add('pending')` + a CSS rule for the loading visual.
 4. **Right-aligned card + `min-width` = blank left half.** Right-aligned
    content in a min-width box looks empty on the left. Use
    `width: max-content` so the card sizes to its content.
-5. **Border-collapse via `nth-child` zero-borders looks like overlap.**
-   Don't share borders. Use `gap: 1px` (equal to border width) between
-   buttons so each keeps its own outline.
+5. **`nth-child` border-collapse looks like overlap.** Don't share borders
+   between adjacent buttons. Use `gap: 1px` (= border width) so each
+   keeps its own outline.
 6. **Cells with dividers need `align-self: stretch`.** Otherwise the cell
-   sizes to content and the `::after` divider (top:0/bottom:0) only spans
-   the short cell, not the full row height.
-7. **Use padding inside cells, never margin.** With `box-sizing: border-box`
-   the cell footprint stays constant — divider x-positions don't shift.
-   Margin would move the cell.
+   sizes to content and the `::after` divider (top: 0 / bottom: 0) only
+   spans the short cell, not the full row height.
+7. **Use padding inside cells, never margin, to offset content.** With
+   `box-sizing: border-box` the cell footprint is constant — divider
+   x-positions don't shift. Margin moves the cell and the divider with it.
 8. **`file://` blocks `fetch()`.** If the dashboard ships as a static HTML
-   file the user opens directly, fetch JSON via `<script src="data.js?t=" +
-   Date.now()>` injection (CORS-exempt). Otherwise run a tiny local
-   `http.server`. Don't waste a half hour wondering why CORS fires.
-9. **Never use `<meta http-equiv="refresh">` for live data.** It full-page
-   reloads → visible snap. Poll JSON, fingerprint the result, and only
-   re-render rows when the fingerprint changes. No flicker.
-10. **The "stale" status does not exist.** Old data may carry it; map it to
-    `archived` on read. Status enum is `in_progress / pending / done /
-    cancelled / archived`.
-
-## Screenshots (visual ground truth)
-
-Before writing any CSS, read these so you anchor to the real look. They
-live in `screenshots/`:
-
-- `screenshots/overview.png` — full dashboard layout
-- `screenshots/section-window.png` — section header + column captions + rows
-- `screenshots/action-cluster.png` — 2 × 2 button group, enabled/disabled
-- `screenshots/stats-row.png` — Playfair numerals + uppercase labels
-- `screenshots/palette.png` — 8-token swatch grid
-
-If a screenshot disagrees with this file, **the screenshot wins** — update
-this file. Source of truth flows: PNG → `styles.css` → `AGENT.md`.
+   file the user opens directly, load JSON via
+   `<script src="data.js?t=" + Date.now()>` injection (CORS-exempt).
+   Otherwise run a tiny `http.server` on `127.0.0.1`. Don't burn a half
+   hour wondering why CORS fires.
+9. **Never `location.reload()` or `<meta http-equiv="refresh">` for live
+   data.** Page snap on every tick. Poll JSON, fingerprint the result,
+   only re-render rows when the fingerprint changed. No flicker.
+10. **Schema migrations.** If you inherit a "stale" status from old data,
+    map it to `archived` on read. The current status enum is
+    `in_progress / pending / blocked / done / cancelled / archived`.
 
 ## When in doubt
 
-- Read `:root` in `styles.css` before inventing any color or font.
+- Read `:root` in `styles.css` before inventing a color.
 - Read `<section id="layout">` in `index.html` before composing a new
-  layout — every primitive you need is already there.
-- Sharp corners. Mono for numerics. Inter for prose. Playfair for numerals.
-- If the user asks for "the green / yellow color", they mean
-  `--accent-green` / `--accent-orange`.
+  layout — every primitive you need is there.
+- Sharp corners. Mono for numerics. Inter for prose. Playfair for big
+  serif numerals + the italic wordmark accent.
+- User says "green" / "yellow" → `--accent-green` / `--accent-orange`.
+- User says "red" with no qualifier → `--accent-red` (primary).
