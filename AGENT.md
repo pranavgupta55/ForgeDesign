@@ -1,27 +1,31 @@
 # AGENT.md — Forge Design build guide for AI agents
 
 You are about to build a dashboard in the Forge aesthetic. This repo is the
-template. **Read this file → open `README.md` and look at every screenshot →
-read `styles.css :root` and `<section id="layout">` in `index.html` → then
-generate.** Anchoring on the screenshots first prevents you from re-deriving
-spacing, type, and color from text alone.
+template. **Read this file → view every PNG in `screenshots/` → read
+`styles.css :root` and `<section id="layout">` in `index.html` →
+read `script.js` for the JS-rendered primitives → then generate.**
+Anchoring on screenshots first prevents you from re-deriving spacing, type,
+and color from text alone.
 
 ## Loading the visual ground truth
 
-The reference screenshots are embedded inline in `README.md` as
-`<img src="https://github.com/user-attachments/...">`. Fetch and view each
-one before writing any CSS — the user's GitHub user-attachments URLs are
-public and load directly. Order: overview, color palette, components,
-layout primitives, action clusters. If a screenshot disagrees with this
-file, **the screenshot wins** — update this file.
+The reference PNGs are in `screenshots/`, generated from the live HTML.
+Read them in this order: `overview.png` → `colors.png` → `typography.png`
+→ `components.png` → `layout.png` → `section-windows.png` →
+`action-cluster.png`. If a screenshot disagrees with this file, **the
+screenshot wins** — update this file. (To regenerate after a visual change:
+`npm install && npm run screenshots`. See "Regenerating screenshots" below.)
 
 ## Build order
 
 Don't build sequentially; **compose from primitives**. Pick the page
-skeleton, then drop in named primitives by class. Every primitive you need
-already lives in `<section id="layout">` of `index.html` — copy the
-markup verbatim, don't reinvent it. Order of attention when you start a
-new page:
+skeleton, then drop in named primitives by class. The static primitives
+(Stats Row eyebrow + sub-rule, Filter Bar markup, Action Cluster, Stack
+Pairs, Status Dots) live as inline HTML inside `<section id="layout">` of
+`index.html`. The dynamic ones (Section Window, Data Row, the live Stats
+Row counts) are **rendered by `script.js`** from a small state object —
+copy the `renderRow` / `renderTables` / `renderStats` functions, not
+inline markup, for those. Order of attention when you start a new page:
 
 1. `:root` tokens (palette + fonts) → copy verbatim.
 2. Page skeleton: `<header>` (h1 + meta strip) → `.summary` → `.projects`
@@ -102,12 +106,14 @@ each primitive has — anything else is off-spec.
   none` active).
 - **Section Window** (`.window-demo`) — bordered card with `[dot] label
   ........ count` header, mono `.row-header-demo` column captions, then
-  `.row-demo`s. Use one window per status bucket.
+  `.row-demo`s. Use one window per status bucket. **JS-rendered** — see
+  `renderTables()` in `script.js` for the markup template.
 - **Data Row** (`.row-demo`) — 13-track grid: 7 content + 6 explicit-gap
   tracks. Cells with a trailing vertical divider (`.ac-cluster`, `.r-id`,
   `.r-title`) must `align-self: stretch`. Divider is a `::after` pseudo at
   `right: -7px; top: 20%; bottom: 20%`. Row hover fills with
-  `var(--accent-red-tint)`.
+  `var(--accent-red-tint)`. **JS-rendered** — see `renderRow()` in
+  `script.js`.
 - **2 × 2 Action Cluster** (`.ac-cluster`) — four 26×26 square icon buttons
   in flex-wrap, `gap: 1px` (= border width, no overlap). States: default
   → hover (bg-elev + accent-red-bright stroke) → `.disabled` (22 % opacity,
@@ -173,6 +179,40 @@ identity.
 10. **Schema migrations.** If you inherit a "stale" status from old data,
     map it to `archived` on read. The current status enum is
     `in_progress / pending / blocked / done / cancelled / archived`.
+
+## Screenshots — visual ground truth
+
+Located in `screenshots/`. Generated from the live HTML by Playwright; do
+not hand-edit. View these in order before generating any CSS:
+
+| File | What it shows |
+|---|---|
+| `overview.png`        | full page top to bottom |
+| `typography.png`      | the type triad with samples |
+| `colors.png`          | 10-token swatch grid (4 × 2) |
+| `components.png`      | badges, code links, level filter, icon grid |
+| `layout.png`          | all layout primitives, top to bottom |
+| `stats-row.png`       | live-state numeric stats |
+| `filter-bar.png`      | bookended Select all / chips / Select none |
+| `section-windows.png` | the four live tables stacked |
+| `action-cluster.png`  | 2×2 cluster in all-enabled / partial / archived |
+| `icon-grid.png`       | the static 8-icon reference grid |
+| `status-dots.png`     | 6 status dot colorways |
+
+## Regenerating screenshots
+
+**Always re-run after a visual change**, then commit the PNGs in the same
+change as the CSS/HTML edit. CI-less consistency means "the PNGs in the
+repo match the HTML in the repo at this commit."
+
+```sh
+npm install            # one-time — pulls Playwright + Chromium
+npm run screenshots    # writes 11 PNGs into screenshots/
+```
+
+The runner lives at `tools/screenshots.mjs`. Add a new `TARGETS` entry
+there to capture a new section. Each target is either `{ name, full: true }`
+(full-page) or `{ name, sel: '#selector' }` (element bounding-box).
 
 ## When in doubt
 

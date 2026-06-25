@@ -46,9 +46,15 @@ button, a, input, textarea, [role="button"] {
   -webkit-tap-highlight-color: transparent;
   outline: none;
 }
-button:focus, button:focus-visible, button:active,
-a:focus, a:focus-visible,
+button:focus, button:active, a:focus,
 input:focus, textarea:focus { outline: none; box-shadow: none; }
+/* Keyboard-only focus is preserved via :focus-visible so screen readers and
+   tab-nav users still see a marker; mouse clicks don't get the ring. */
+button:focus-visible, a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 1px solid var(--accent-red-bright);
+  outline-offset: 1px;
+}
 button { user-select: none; font-family: inherit; }
 
 /* ── Topbar ── */

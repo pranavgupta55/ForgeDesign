@@ -199,16 +199,17 @@
     const noneBtn = filterBar.querySelector('[data-filter="none"]');
     const chips   = Array.from(filterBar.querySelectorAll('.filter-chip'));
 
-    function syncBookends() {
-      const total = chips.length;
-      const on = chips.filter(c => c.classList.contains('active')).length;
-      allBtn.classList.toggle('active',  on === total);
-      noneBtn.classList.toggle('active', on === 0);
+    if (allBtn && noneBtn && chips.length) {
+      const syncBookends = () => {
+        const on = chips.filter(c => c.classList.contains('active')).length;
+        allBtn.classList.toggle('active',  on === chips.length);
+        noneBtn.classList.toggle('active', on === 0);
+      };
+      allBtn.addEventListener('click',  () => { chips.forEach(c => c.classList.add('active'));    syncBookends(); });
+      noneBtn.addEventListener('click', () => { chips.forEach(c => c.classList.remove('active')); syncBookends(); });
+      chips.forEach(c => c.addEventListener('click', () => { c.classList.toggle('active'); syncBookends(); }));
+      syncBookends();
     }
-    allBtn.addEventListener('click', () => { chips.forEach(c => c.classList.add('active'));    syncBookends(); });
-    noneBtn.addEventListener('click', () => { chips.forEach(c => c.classList.remove('active')); syncBookends(); });
-    chips.forEach(c => c.addEventListener('click', () => { c.classList.toggle('active'); syncBookends(); }));
-    syncBookends();
   }
 
   /* ── Component filter chips (in the Components section) keep their

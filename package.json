@@ -1,0 +1,13 @@
+{
+  "name": "forgedesign",
+  "private": true,
+  "type": "module",
+  "description": "Forge design system showcase. Static HTML/CSS/JS — npm is only used for the screenshot tool.",
+  "scripts": {
+    "screenshots": "node tools/screenshots.mjs",
+    "postinstall": "playwright install chromium >/dev/null 2>&1 || true"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}
