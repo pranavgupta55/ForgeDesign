@@ -122,10 +122,22 @@ button { user-select: none; font-family: inherit; }
 
 /* ── Page layout ── */
 main {
-  max-width: 920px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 40px 32px 120px;
 }
+
+/* Stroke-based inline icons used in the Layout primitives section. */
+svg.ic {
+  width: 14px; height: 14px;
+  display: block;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ac-cluster-lg svg.ic { width: 16px; height: 16px; }
 section {
   margin-bottom: 120px;
   scroll-margin-top: 80px;
@@ -504,7 +516,7 @@ section {
 .row-header-demo {
   display: grid;
   grid-template-columns:
-    53px 14px 180px 18px 64px 14px 1fr 14px 120px 14px 64px 4px 76px;
+    53px 14px 180px 20px 64px 14px 1fr 14px 90px 14px 64px 4px 76px;
   gap: 0;
   align-items: center;
   padding: 10px 16px;
@@ -532,7 +544,7 @@ section {
 .row-demo {
   display: grid;
   grid-template-columns:
-    53px 14px 180px 18px 64px 14px 1fr 14px 120px 14px 64px 4px 76px;
+    53px 14px 180px 20px 64px 14px 1fr 14px 90px 14px 64px 4px 76px;
   gap: 0;
   align-items: center;
   padding: 16px 16px;
@@ -652,6 +664,15 @@ section {
   color: var(--text-dim);
 }
 
+.row-empty {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  padding: 18px 16px;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
 /* —— 2×2 Action Cluster —— */
 .ac-cluster {
   display: flex;
@@ -704,13 +725,14 @@ section {
   flex-wrap: wrap;
 }
 .stack-card {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   gap: 7px;
   padding: 14px 18px;
   border: 1px solid var(--border-subtle);
   background: var(--bg-card);
-  min-width: 180px;
+  width: max-content;
+  max-width: 100%;
 }
 .stack-card.stack-right { align-items: flex-end; text-align: right; }
 .stack-card .r-s-title {
