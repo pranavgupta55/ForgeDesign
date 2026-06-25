@@ -78,6 +78,22 @@ below. **Don't redefine these; import the file or copy `:root` verbatim.**
 | `--accent-grey`       | `#7a6a5d` | archived (recoverable, deprecated) |
 | `--text-main / dim / mute` | `#ece6dc / #9b8a92 / #5a4a55` | text tiers |
 
+**Secondary palette — dashboard categorical fills.** Use only for chart
+series and multi-bucket tags where the primary status trio (green / orange
+/ grey) runs out. These are **not status tokens** — don't substitute them
+for `--accent-green / orange / grey` in semantic slots. Split-complementary
+to the red brand axis, three cool + three warm, muted-leaning so they sit
+beside the earth-tone trio without competing.
+
+| token | value | role |
+|---|---|---|
+| `--accent-blue`   | `#335C81` | series A · info |
+| `--accent-teal`   | `#177E89` | series B |
+| `--accent-violet` | `#998FC7` | series C |
+| `--accent-mauve`  | `#AA767C` | series D |
+| `--accent-olive`  | `#656839` | series E |
+| `--accent-peach`  | `#FCD0A1` | series F · light highlight |
+
 ## Spacing & motion
 
 - **Gap scale (px):** `4 / 7 / 14 / 20 / 28`. 14 is the row default; 4 is

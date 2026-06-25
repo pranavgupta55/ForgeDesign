@@ -16,6 +16,17 @@
   --accent-orange:     #C87A3A;  /* status: custom tag / no-project / pending */
   --accent-grey:       #7a6a5d;  /* status: archived (deprecated, recoverable) */
 
+  /* Secondary palette — categorical fills for dashboards needing more
+     than the primary status trio (chart series, multi-bucket tags).
+     Muted/earth-leaning to match the existing supporting tokens; 3 cool
+     + 3 warm with a wide lightness spread for CVD-safe alternation. */
+  --accent-blue:       #335C81;  /* deep blue anchor — info, series A */
+  --accent-teal:       #177E89;  /* cyan-teal — series B */
+  --accent-violet:     #998FC7;  /* soft purple — series C */
+  --accent-mauve:      #AA767C;  /* muted pink-purple — series D */
+  --accent-olive:      #656839;  /* earth dark — series E */
+  --accent-peach:      #FCD0A1;  /* soft light warm — series F */
+
   --text-main:  #ece6dc;
   --text-dim:   #9b8a92;
   --text-mute:  #5a4a55;
@@ -271,6 +282,13 @@ section {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-dim);
+}
+.palette-note {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 720px;
+  margin: 0 0 24px;
 }
 
 /* Components */
