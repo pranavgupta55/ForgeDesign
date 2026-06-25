@@ -16,7 +16,7 @@ in a browser; no build step.
 | Typography (3 typefaces, strict roles) | [`screenshots/typography.png`](./screenshots/typography.png) |
 | Color palette (9 primary + 6 secondary tokens) | [`screenshots/colors.png`](./screenshots/colors.png) |
 | Components (badges, filters, icon grid) | [`screenshots/components.png`](./screenshots/components.png) |
-| Layout primitives (stats / filter / windows / clusters / dots) | [`screenshots/layout.png`](./screenshots/layout.png) |
+| Layout primitives (stats / filter / windows / clusters / dots / day-header) | [`screenshots/layout.png`](./screenshots/layout.png) |
 | Section windows (live demo, 4 buckets) | [`screenshots/section-windows.png`](./screenshots/section-windows.png) |
 | 2×2 action clusters (state matrix) | [`screenshots/action-cluster.png`](./screenshots/action-cluster.png) |
 
@@ -32,7 +32,8 @@ screenshot tool.
   hashes, timestamps, uppercase eyebrow labels), Playfair Display
   (large serif numerals + italic 800 wordmark accent only).
 - **Surfaces:** sharp corners everywhere (no `border-radius`), thin 1 px
-  borders, no shadows, no gradients.
+  borders (cream-tinted alpha to harmonise with the warm text palette —
+  never pure white), no shadows, no gradients.
 - **Animations:** windowed slide transitions on `cubic-bezier(0.4, 0, 0.2, 1)`.
 - **Palette:** red / plum / status primary + a 6-color dashboard secondary
   (canonical values in [`styles.css :root`](./styles.css)):

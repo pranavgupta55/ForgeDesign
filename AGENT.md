@@ -106,6 +106,73 @@ Usage notes:
   **don't place olive and mauve adjacent in the same legend** — split them
   with a cool (blue / teal / violet) between for safety.
 
+### Using the secondary palette in chart libraries
+
+Chart libraries (vis-network, d3, chart.js, Plotly) consume colors in two
+ways. CSS-aware libraries accept `var(--accent-blue)` directly as a node
+color or stroke; CSS-unaware libraries need a raw hex string. Expose the
+six values as a JS constant alongside the CSS tokens:
+
+```js
+const FORGE_SECONDARY = {
+  blue:   '#335C81', teal:   '#177E89', violet: '#998FC7',
+  mauve:  '#AA767C', olive:  '#656839', peach:  '#FCD0A1',
+};
+const FORGE_SECONDARY_LIST = Object.values(FORGE_SECONDARY);
+```
+
+**Fallback cycle when a category is unmapped.** If the upstream data
+provides a per-category palette (e.g. `DATA.palette[category]`) treat it
+as canonical and prefer it. For missing categories, cycle through
+`FORGE_SECONDARY_LIST` by index rather than defaulting to gray:
+
+```js
+function categoryColor(cat, idx) {
+  return DATA.palette[cat] || FORGE_SECONDARY_LIST[idx % FORGE_SECONDARY_LIST.length];
+}
+```
+
+Never fall back to `#5a5a55`, `#666`, or any other neutral gray — it
+breaks the warm palette and the missing-category becomes invisible.
+
+### Hash-coded chips: the open-keyspace exception
+
+The secondary palette is for **closed categorical sets** of ≤6 items. When
+color must encode identity across an open-ended key space (content hashes,
+commit SHAs, request IDs, session UUIDs), cycling six values forces
+collisions. The sanctioned exception is hue-from-hash with constrained
+saturation and lightness, used as a chip background on `--bg-base`:
+
+```js
+function hashHue(s) {
+  let n = 0;
+  for (let i = 0; i < Math.min(s.length, 8); i++) n = (n * 31 + s.charCodeAt(i)) >>> 0;
+  return n % 360;
+}
+function hashChipStyle(s) {
+  const h = hashHue(s);
+  return `background:hsl(${h}, 22%, 16%);` +
+         `color:hsl(${h}, 30%, 70%);` +
+         `border-color:hsl(${h}, 25%, 28%);`;
+}
+```
+
+Constraints (must hold for hash chips to feel Forge-aligned):
+- **Saturation ≤25 %** on backgrounds and borders — pure vivid hues
+  fight the muted earth-tone palette.
+- **Lightness 14-20 %** for the chip background — sits on `--bg-base`
+  without competing.
+- **Use only as chip backgrounds** (or small-fill accents), never as text
+  color on a neutral background or as the primary surface of a large
+  region. Text color paired with the chip should hue-shift to `L 70 %` so
+  it stays readable.
+- **Reveal on signal, not by default.** The Skills Dashboard only applies
+  the chip when drift is detected — when all hashes match, the chip is
+  empty. This makes the color carry information instead of decoration.
+
+The HSL-hash pattern co-exists with the secondary palette: closed sets
+use the named tokens; open-ended identity uses the hash-coded chip.
+
 ## Spacing & motion
 
 - **Gap scale (px):** `4 / 7 / 14 / 20 / 28`. 14 is the row default; 4 is
@@ -156,6 +223,13 @@ each primitive has — anything else is off-spec.
 - **Status Dots** (`.dot-item`) — 7×7 square swatch + lowercase Inter
   label. Six pre-defined colorways: `.dot-active / blocked / pending /
   done / cancelled / archived`.
+- **Day Group Header** (`.day-header`) — sticky vertical-group divider
+  for timelines, day-by-day session lists, audit logs. Pattern: 7×7
+  status dot · Inter label · dotted leader filling remaining gap · mono
+  count, right-aligned. Set `position: sticky; top: 0;` in the
+  consuming scroll container to pin. Leader uses
+  `border-bottom: 1px dotted var(--border-strong)` — the only sanctioned
+  use of a dotted border in the system. Used by the Session Scanner.
 
 ## Behaviour — bucket-shift action buttons (example)
 
