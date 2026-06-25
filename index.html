@@ -16,6 +16,7 @@
       <button class="nav-btn" data-target="typography">Typography</button>
       <button class="nav-btn" data-target="colors">Color Palette</button>
       <button class="nav-btn" data-target="components">Components</button>
+      <button class="nav-btn" data-target="layout">Layout</button>
     </div>
     <div class="tb-right">
       <a class="tb-link" href="https://github.com/pranavgupta55/ForgeDesign" target="_blank" rel="noopener noreferrer">
@@ -132,6 +133,8 @@
             <span class="badge bright">Live</span>
             <span class="badge deep">Archived</span>
             <span class="badge dim">Deprecated</span>
+            <span class="badge custom">Custom Tag</span>
+            <span class="badge success">Done</span>
           </div>
 
           <div class="sub-rule" style="margin-top:32px">Code Links</div>
@@ -179,6 +182,158 @@
             </button>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="layout">
+      <div class="eyebrow">
+        <span class="title">Layout Primitives</span>
+        <span class="count">Stats · Bookended Filter · Section Window · Stacks · Action Cluster</span>
+      </div>
+
+      <div class="sub-rule">Stats Row</div>
+      <p class="primitive-blurb">Big serif numerals + small uppercase labels, separated by 1 px subtle vertical rules. Accent the numeral by status, not the label.</p>
+      <div class="stats-demo">
+        <div class="stat-cell"><span class="n">24</span><span class="l">open</span></div>
+        <div class="stat-cell"><span class="n active">1</span><span class="l">active</span></div>
+        <div class="stat-cell"><span class="n blocked">0</span><span class="l">blocked</span></div>
+        <div class="stat-cell"><span class="n pending">23</span><span class="l">pending</span></div>
+        <div class="stat-cell"><span class="n done">32</span><span class="l">done</span></div>
+        <div class="stat-cell"><span class="n archived">1</span><span class="l">archived</span></div>
+      </div>
+
+      <div class="sub-rule" style="margin-top:40px">Bookended Filter Bar</div>
+      <p class="primitive-blurb">Select-all / Select-none bookends flank a centered chip row. The bookends use the uppercase-tracked `filter-btn` style; chips support a Custom orange variant for cross-cutting tags.</p>
+      <div class="filter-bar-demo">
+        <button class="filter-btn active">Select all</button>
+        <div class="chip-row-demo">
+          <button class="filter-chip active">alpha<span class="chip-count">12</span></button>
+          <button class="filter-chip active">beta<span class="chip-count">7</span></button>
+          <button class="filter-chip">gamma<span class="chip-count">3</span></button>
+          <button class="filter-chip custom">(custom)<span class="chip-count">2</span></button>
+        </div>
+        <button class="filter-btn">Select none</button>
+      </div>
+
+      <div class="sub-rule" style="margin-top:40px">Section Window</div>
+      <p class="primitive-blurb">Bordered card with a header strip (status dot · lowercase label · right-aligned count), followed by a mono-set column-header row and data rows. Vertical 1 px dividers in the gaps mark column boundaries; their height is ~60 % of the row, vertically centered.</p>
+      <section class="window-demo">
+        <h2 class="window-head">
+          <span class="dot dot-pending"></span>
+          pending
+          <span class="ct">23</span>
+        </h2>
+        <div class="row-header-demo">
+          <span class="h-actions"></span>
+          <span class="h-session">Title + Session ID</span>
+          <span class="h-id">task ID</span>
+          <span class="h-title">Desc</span>
+          <span class="h-project">Proj</span>
+          <span class="h-day">Day</span>
+          <span class="h-time">Time</span>
+        </div>
+        <div class="row-demo">
+          <div class="ac-cluster">
+            <button class="ac-btn" aria-label="up"><svg class="ic" viewBox="0 0 24 24"><path d="M3 19h11a3 3 0 0 0 3-3V9"/><path d="M13 9l4-4 4 4"/></svg></button>
+            <button class="ac-btn" aria-label="done"><svg class="ic" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></button>
+            <button class="ac-btn" aria-label="down"><svg class="ic" viewBox="0 0 24 24"><path d="M3 5h11a3 3 0 0 1 3 3v7"/><path d="M13 15l4 4 4-4"/></svg></button>
+            <button class="ac-btn disabled" aria-label="purge"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 7V4h4v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+          </div>
+          <div class="r-session">
+            <span class="r-s-title">Sample Session Title</span>
+            <span class="r-s-id">12b1199f</span>
+          </div>
+          <span class="r-id">k8sils</span>
+          <span class="r-title">Build code-review-at-scale skill: mermaid architecture diagram → click node → see inline diff.</span>
+          <span class="r-project">alpha</span>
+          <span class="r-day">yesterday</span>
+          <span class="r-time">
+            <span class="toc">MORNING</span>
+            <span class="hms">11:21 AM</span>
+          </span>
+        </div>
+        <div class="row-demo">
+          <div class="ac-cluster">
+            <button class="ac-btn" aria-label="up"><svg class="ic" viewBox="0 0 24 24"><path d="M3 19h11a3 3 0 0 0 3-3V9"/><path d="M13 9l4-4 4 4"/></svg></button>
+            <button class="ac-btn" aria-label="done"><svg class="ic" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></button>
+            <button class="ac-btn" aria-label="down"><svg class="ic" viewBox="0 0 24 24"><path d="M3 5h11a3 3 0 0 1 3 3v7"/><path d="M13 15l4 4 4-4"/></svg></button>
+            <button class="ac-btn disabled" aria-label="purge"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 7V4h4v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+          </div>
+          <div class="r-session">
+            <span class="r-s-title">Forge Rebuild and Task List Setup</span>
+            <span class="r-s-id">ab0c1c8d</span>
+          </div>
+          <span class="r-id">f0a9qp</span>
+          <span class="r-title">audit other diff-comparison code for newline / whitespace false-positive bugs.</span>
+          <span class="r-project custom">custom</span>
+          <span class="r-day">today</span>
+          <span class="r-time">
+            <span class="toc">AFTERNOON</span>
+            <span class="hms">4:25 PM</span>
+          </span>
+        </div>
+      </section>
+
+      <div class="layout-grid-2">
+        <div>
+          <div class="sub-rule">Stack Pairs</div>
+          <p class="primitive-blurb">Two-line vertical stacks. Title + ID (Inter title above mono id) and TOC + Time (uppercase tagline above mono numeric).</p>
+          <div class="stack-pair-row">
+            <div class="stack-card">
+              <span class="r-s-title">Kiso Interview Transcription</span>
+              <span class="r-s-id">12b1199f</span>
+            </div>
+            <div class="stack-card stack-right">
+              <span class="toc">AFTERNOON</span>
+              <span class="hms">4:25 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub-rule">Action Cluster (2 × 2)</div>
+          <p class="primitive-blurb">Four square icon buttons with their own borders and a 1 px gap. Disabled buttons stay in place at 22 % opacity — the cluster's footprint never changes.</p>
+          <div class="action-cluster-row">
+            <div class="cluster-stack">
+              <div class="ac-cluster ac-cluster-lg">
+                <button class="ac-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M3 19h11a3 3 0 0 0 3-3V9"/><path d="M13 9l4-4 4 4"/></svg></button>
+                <button class="ac-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></button>
+                <button class="ac-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M3 5h11a3 3 0 0 1 3 3v7"/><path d="M13 15l4 4 4-4"/></svg></button>
+                <button class="ac-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 7V4h4v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+              </div>
+              <span class="cluster-cap">all enabled</span>
+            </div>
+            <div class="cluster-stack">
+              <div class="ac-cluster ac-cluster-lg">
+                <button class="ac-btn disabled"><svg class="ic" viewBox="0 0 24 24"><path d="M3 19h11a3 3 0 0 0 3-3V9"/><path d="M13 9l4-4 4 4"/></svg></button>
+                <button class="ac-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></button>
+                <button class="ac-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M3 5h11a3 3 0 0 1 3 3v7"/><path d="M13 15l4 4 4-4"/></svg></button>
+                <button class="ac-btn disabled"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 7V4h4v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+              </div>
+              <span class="cluster-cap">pending</span>
+            </div>
+            <div class="cluster-stack">
+              <div class="ac-cluster ac-cluster-lg">
+                <button class="ac-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M3 19h11a3 3 0 0 0 3-3V9"/><path d="M13 9l4-4 4 4"/></svg></button>
+                <button class="ac-btn disabled"><svg class="ic" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></button>
+                <button class="ac-btn disabled"><svg class="ic" viewBox="0 0 24 24"><path d="M3 5h11a3 3 0 0 1 3 3v7"/><path d="M13 15l4 4 4-4"/></svg></button>
+                <button class="ac-btn"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 7V4h4v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+              </div>
+              <span class="cluster-cap">archived</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-rule" style="margin-top:40px">Status Dots</div>
+      <p class="primitive-blurb">7 × 7 px squares (sharp corners, never round) used as the inline status marker in section headers and any inline list.</p>
+      <div class="dots-row">
+        <span class="dot-item"><span class="dot dot-active"></span>active</span>
+        <span class="dot-item"><span class="dot dot-blocked"></span>blocked</span>
+        <span class="dot-item"><span class="dot dot-pending"></span>pending</span>
+        <span class="dot-item"><span class="dot dot-done"></span>done</span>
+        <span class="dot-item"><span class="dot dot-cancelled"></span>cancelled</span>
+        <span class="dot-item"><span class="dot dot-archived"></span>archived</span>
       </div>
     </section>
   </main>
