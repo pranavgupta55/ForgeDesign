@@ -48,6 +48,7 @@ screenshot tool.
   | `--accent-red-deep`   | `#530B32` | danger fill (purge hover) |
   | `--accent-green`      | `#73C990` | done / success |
   | `--accent-orange`     | `#C87A3A` | pending / custom / no-project |
+  | `--accent-grey`       | `#7a6a5d` | archived (recoverable) |
   | `--text-main/dim/mute` | `#ece6dc / #9b8a92 / #5a4a55` | text tiers |
 
 Inspired by [DitherTemplate](https://github.com/pranavgupta55/DitherTemplate)
@@ -67,13 +68,16 @@ screenshots/    PNGs generated from index.html (do not hand-edit)
 ## Regenerating screenshots
 
 The PNGs under `screenshots/` are produced by Playwright against the live
-HTML. Always re-run after a visual change so README stays in sync:
+HTML. Always re-run after a visual change so the README stays in sync:
 
 ```sh
 npm install            # one-time — installs Playwright + Chromium
 npm run screenshots    # writes 11 PNGs into screenshots/
 ```
 
-For agents pushing visual changes: **regenerate screenshots and commit them
-in the same change**. The CI-less version of consistency is "the PNGs in
-the repo match the HTML in the repo."
+Enforced by CI: `.github/workflows/screenshots.yml` regenerates screenshots
+on every push/PR that touches the rendered files and fails the build if
+the committed PNGs don't match. The freshly-rendered PNGs are uploaded as
+an artifact when CI fails, so contributors can download them straight onto
+the branch if they forgot to re-run locally. **Don't merge with a red
+screenshot job.**

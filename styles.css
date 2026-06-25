@@ -13,7 +13,8 @@
   --accent-red-tint:   rgba(203, 41, 67, 0.12);
 
   --accent-green:      #73C990;  /* status: done / passing */
-  --accent-orange:     #C87A3A;  /* status: custom tag / no-project */
+  --accent-orange:     #C87A3A;  /* status: custom tag / no-project / pending */
+  --accent-grey:       #7a6a5d;  /* status: archived (deprecated, recoverable) */
 
   --text-main:  #ece6dc;
   --text-dim:   #9b8a92;
@@ -237,10 +238,10 @@ section {
 .type-card .sample.mono  { font-family: var(--font-mono);  font-size: 13px; color: #d9a8b8; }
 @media (max-width: 720px) { .type-grid { grid-template-columns: 1fr; } }
 
-/* Color swatches — two rows of four (surfaces row + accents row). */
+/* Color swatches — 3 × 3 (surfaces, reds, status). */
 .swatch-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px 20px;
 }
 @media (max-width: 720px) { .swatch-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -453,7 +454,7 @@ section {
 .stats-demo .n.blocked  { color: var(--accent-red); }
 .stats-demo .n.pending  { color: var(--text-main); }
 .stats-demo .n.done     { color: var(--accent-green); }
-.stats-demo .n.archived { color: #7a6a5d; }
+.stats-demo .n.archived { color: var(--accent-grey); }
 
 /* —— Bookended Filter Bar —— */
 .filter-btn {
@@ -498,7 +499,7 @@ section {
 }
 .window-demo .window-head {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-dim);
@@ -814,7 +815,7 @@ section {
 .dot-pending   { background: var(--accent-orange); }
 .dot-done      { background: var(--accent-green); }
 .dot-cancelled { background: #5a4a55; }
-.dot-archived  { background: #7a6a5d; }
+.dot-archived  { background: var(--accent-grey); }
 
 /* Scrollbars */
 ::-webkit-scrollbar { width: 6px; height: 6px; }

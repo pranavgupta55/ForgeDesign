@@ -5,18 +5,10 @@
 //   npm install   # one-time: pulls Playwright + Chromium
 //   npm run screenshots
 //
-// Outputs:
-//   screenshots/overview.png         full page
-//   screenshots/typography.png       #typography
-//   screenshots/colors.png           #colors
-//   screenshots/components.png       #components
-//   screenshots/layout.png           #layout
-//   screenshots/stats-row.png        #demo-stats
-//   screenshots/filter-bar.png       #demo-filter
-//   screenshots/section-windows.png  #demo-tables
-//   screenshots/action-cluster.png   #layout .action-cluster-row
-//   screenshots/icon-grid.png        #components .icon-grid
-//   screenshots/status-dots.png      #layout .dots-row
+// Outputs (11 PNGs):
+//   overview, typography, colors, components, layout,
+//   stats-row, filter-bar, section-windows, action-cluster,
+//   icon-grid, status-dots
 
 import { chromium } from 'playwright';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -44,27 +36,33 @@ const TARGETS = [
 ];
 
 const browser = await chromium.launch();
-const ctx = await browser.newContext({
-  viewport: { width: 1440, height: 1000 },
-  deviceScaleFactor: 2,
-  colorScheme: 'dark',
-});
-const page = await ctx.newPage();
-await page.goto(URL, { waitUntil: 'networkidle' });
-// Web fonts need a tick to settle after `networkidle`.
-await page.evaluate(() => document.fonts && document.fonts.ready);
-await page.waitForTimeout(150);
+try {
+  const ctx = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+    deviceScaleFactor: 2,
+    colorScheme: 'dark',
+  });
+  const page = await ctx.newPage();
+  // 'load' is more deterministic than 'networkidle' for local file:// URLs
+  // (networkidle can hang on long-polling and is discouraged by Playwright).
+  await page.goto(URL, { waitUntil: 'load' });
+  // Wait for web fonts to actually finish loading; otherwise the first 1-2
+  // captures get FOUT (system font) glyphs.
+  await page.evaluate(() => document.fonts && document.fonts.ready);
 
-for (const t of TARGETS) {
-  const out = join(OUT, `${t.name}.png`);
-  if (t.full) {
-    await page.screenshot({ path: out, fullPage: true });
-  } else {
-    const el = page.locator(t.sel).first();
-    await el.scrollIntoViewIfNeeded();
-    await el.screenshot({ path: out, animations: 'disabled' });
+  for (const t of TARGETS) {
+    const out = join(OUT, `${t.name}.png`);
+    if (t.full) {
+      await page.screenshot({ path: out, fullPage: true });
+    } else {
+      const el = page.locator(t.sel).first();
+      await el.waitFor({ state: 'visible' });
+      await el.scrollIntoViewIfNeeded();
+      await el.screenshot({ path: out, animations: 'disabled' });
+    }
+    console.log(`saved ${t.name}.png`);
   }
-  console.log(`saved ${t.name}.png`);
+} finally {
+  // Always close — otherwise a locator miss leaks the Chromium process.
+  await browser.close();
 }
-
-await browser.close();

@@ -75,6 +75,7 @@ below. **Don't redefine these; import the file or copy `:root` verbatim.**
 | `--accent-red-deep`   | `#530B32` | danger fill (purge-button hover) |
 | `--accent-green`      | `#73C990` | done / success |
 | `--accent-orange`     | `#C87A3A` | pending, custom tag, no-project |
+| `--accent-grey`       | `#7a6a5d` | archived (recoverable, deprecated) |
 | `--text-main / dim / mute` | `#ece6dc / #9b8a92 / #5a4a55` | text tiers |
 
 ## Spacing & motion
@@ -144,6 +145,59 @@ Disabled buttons keep their slot at 22 % opacity. **Never collapse the
 cluster when something is disabled** — the 53×53 footprint is part of the
 identity.
 
+## Showcase ↔ production class-name mapping
+
+This repo's HTML uses `-demo` / `r-` prefixed class names so the showcase
+sections don't visually leak into themselves. **In a real dashboard, drop
+those prefixes** — the live Tasks dashboard (and any production clone)
+uses the bare names. Mapping:
+
+| Showcase class | Production class |
+|---|---|
+| `.row-demo`        | `.row`           |
+| `.row-header-demo` | `.row-header`    |
+| `.ac-cluster`      | `.actions`       |
+| `.ac-btn`          | `.actions button` |
+| `.r-session`       | `.session-stack` |
+| `.r-s-title / r-s-id` | `.s-title / .s-id` |
+| `.r-id`            | `.id`            |
+| `.r-title`         | `.title`         |
+| `.r-project`       | `.project`       |
+| `.r-day`           | `.day`           |
+| `.r-time`          | `.time-stack`    |
+| `.window-demo`     | `<section data-status="…">` |
+| `.window-head`     | `<h2>`           |
+| `.stats-demo`      | `.summary`       |
+| `.stat-cell`       | `.stat`          |
+| `.filter-bar-demo` | `.projects`      |
+
+## Canonical column widths (production)
+
+The showcase demo row is **deliberately narrower** so it fits the 1080 px
+template page. Production rows widen the session / project / day / time
+columns. Use these widths when rebuilding the dashboard:
+
+| col | production | showcase | gap to next |
+|---|---|---|---|
+| actions       | 53  | 53  | 14  |
+| session-stack | 204 | 180 | 28  |
+| id            | 70  | 64  | 14  |
+| title (1fr)   | 1fr | 1fr | 14  |
+| project       | 160 | 90  | 14  |
+| day           | 72  | 64  | 4   |
+| time-stack    | 72  | 76  | —   |
+
+(The 28 / 4 gap widths and the 53 + 1 + … action-cluster footprint stay
+identical across both contexts.)
+
+## Status enum (production)
+
+The full Tasks-dashboard status set is **six values**, not the four shown
+in the demo: `in_progress / pending / blocked / done / cancelled /
+archived`. The demo only exercises four to keep the page short. If you're
+building a clone, render `blocked` and `cancelled` sections too — their
+dot colors are `--accent-red` (blocked) and `--text-mute` (cancelled).
+
 ## Pitfalls — these all bit us; you will hit them too
 
 1. **Inline `<svg>` renders as filled black shapes by default.** Every
@@ -202,8 +256,7 @@ not hand-edit. View these in order before generating any CSS:
 ## Regenerating screenshots
 
 **Always re-run after a visual change**, then commit the PNGs in the same
-change as the CSS/HTML edit. CI-less consistency means "the PNGs in the
-repo match the HTML in the repo at this commit."
+change as the CSS/HTML edit.
 
 ```sh
 npm install            # one-time — pulls Playwright + Chromium
@@ -211,8 +264,15 @@ npm run screenshots    # writes 11 PNGs into screenshots/
 ```
 
 The runner lives at `tools/screenshots.mjs`. Add a new `TARGETS` entry
-there to capture a new section. Each target is either `{ name, full: true }`
-(full-page) or `{ name, sel: '#selector' }` (element bounding-box).
+to capture a new section — each is `{ name, full: true }` (full-page) or
+`{ name, sel: '#selector' }` (element bounding-box).
+
+**Enforced by CI.** `.github/workflows/screenshots.yml` runs on every
+push and PR that touches `index.html` / `styles.css` / `script.js` /
+the runner. It regenerates screenshots and **fails the build if the
+committed PNGs are out of sync**. The freshly-rendered PNGs are uploaded
+as a workflow artifact so you can download them straight onto your
+branch if you forgot to re-run locally.
 
 ## When in doubt
 

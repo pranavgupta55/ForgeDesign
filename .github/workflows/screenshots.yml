@@ -1,0 +1,66 @@
+name: Screenshot sync check
+
+# Runs on every push and PR. Regenerates screenshots from index.html and
+# fails if the committed PNGs are out of date — forces contributors to
+# re-run `npm run screenshots` locally and commit the result.
+#
+# Only watches the files that affect rendering, so doc-only changes
+# (README / AGENT.md) don't burn CI minutes.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'styles.css'
+      - 'script.js'
+      - 'tools/screenshots.mjs'
+      - 'package.json'
+      - '.github/workflows/screenshots.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'styles.css'
+      - 'script.js'
+      - 'tools/screenshots.mjs'
+      - 'package.json'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps (auto-installs Chromium via postinstall)
+        run: npm ci || npm install
+
+      - name: Regenerate screenshots
+        run: npm run screenshots
+
+      - name: Verify committed PNGs match regenerated output
+        run: |
+          if ! git diff --quiet -- screenshots/; then
+            echo ""
+            echo "::error::Screenshots are out of sync with index.html / styles.css / script.js."
+            echo "Run 'npm install && npm run screenshots' locally and commit the screenshots/ folder."
+            echo ""
+            echo "Files changed:"
+            git diff --name-only -- screenshots/
+            exit 1
+          fi
+          echo "✓ Screenshots are in sync."
+
+      # On a hard mismatch, upload the freshly-rendered PNGs so the author
+      # can download them and commit without re-running locally.
+      - name: Upload fresh screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regenerated-screenshots
+          path: screenshots/
+          retention-days: 7
