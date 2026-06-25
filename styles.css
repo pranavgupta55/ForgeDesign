@@ -232,6 +232,14 @@ section {
   border: 1px solid var(--border-subtle);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }
+.swatch .role {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-red);
+}
 .swatch .label {
   font-size: 11px; font-weight: 600;
   color: var(--text-main);
@@ -271,7 +279,6 @@ section {
   letter-spacing: 0.1em; text-transform: uppercase;
   padding: 4px 10px;
   border: 1px solid;
-  border-radius: 999px;
 }
 .badge.red   { color: var(--accent-red);        background: var(--accent-red-tint); border-color: var(--border-accent); }
 .badge.bright{ color: var(--accent-red-bright); background: rgba(238,69,65,0.08);   border-color: rgba(238,69,65,0.30); }
@@ -293,44 +300,46 @@ section {
 .codelink:hover { background: rgba(238, 69, 65, 0.18); color: #fff; }
 .codelink .arrow { font-size: 10px; opacity: 0.7; }
 
-/* Checkboxes */
-.check-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 4px 16px; padding: 12px 0;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+/* Filter chips (toggle buttons) */
+.filter-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
 }
-.check-grid label {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 11px;
-  color: var(--text-dim);
-  cursor: pointer; user-select: none;
-}
-.check-grid input[type="checkbox"] {
-  -webkit-appearance: none; appearance: none;
-  width: 12px; height: 12px;
+.filter-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px;
   background: var(--bg-card);
-  border: 1px solid var(--border-strong);
-  cursor: pointer; flex-shrink: 0;
-  position: relative;
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-mute);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  cursor: pointer;
+  user-select: none;
 }
-.check-grid input[type="checkbox"]:checked {
-  background: var(--accent-red);
+.filter-chip:hover {
+  color: var(--text-main);
+  border-color: var(--accent-red-dim);
+}
+.filter-chip.active {
+  color: var(--text-main);
   border-color: var(--accent-red);
+  background: var(--bg-elev);
 }
-.check-grid input[type="checkbox"]:checked::after {
-  content: ''; position: absolute;
-  left: 3px; top: 0; width: 3px; height: 7px;
-  border: solid #fff;
-  border-width: 0 1.5px 1.5px 0;
-  transform: rotate(45deg);
+.filter-chip .chip-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-mute);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.15s;
 }
-.check-grid label:hover { color: var(--text-main); }
+.filter-chip.active .chip-count { color: var(--accent-red); }
 
-/* Icon button grid — 3 cols × 2 rows, shared borders (no gap) */
+/* Icon button grid — 4 cols × 2 rows, shared borders (no gap) */
 .icon-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 0;
   border: 1px solid var(--border-strong);
@@ -350,11 +359,11 @@ section {
 }
 .icon-btn:hover { color: var(--accent-red-bright); background: var(--bg-elev); }
 .icon-btn:active { background: var(--accent-red-deep); color: #fff; }
-/* Remove outer borders so the grid container border is the outer ring */
-.icon-grid .icon-btn:nth-child(3n) { border-right: none; }
-.icon-grid .icon-btn:nth-child(n+4) { border-bottom: none; }
+.icon-grid .icon-btn:nth-child(4n) { border-right: none; }
+.icon-grid .icon-btn:nth-child(n+5) { border-bottom: none; }
 .icon-btn svg {
   width: 20px; height: 20px;
+  display: block;
   stroke: currentColor;
   fill: none;
   stroke-width: 1.75;

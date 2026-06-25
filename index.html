@@ -69,34 +69,40 @@
       </div>
       <div class="swatch-grid">
         <div class="swatch">
-          <div class="chip" style="background:#CB2943"></div>
-          <span class="label">Accent Red</span>
-          <span class="hex">#CB2943</span>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#811339"></div>
-          <span class="label">Rouge Dim</span>
-          <span class="hex">#811339</span>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#530B32"></div>
-          <span class="label">Deep Plum</span>
-          <span class="hex">#530B32</span>
+          <div class="chip" style="background:#09030a"></div>
+          <span class="role">Background</span>
+          <span class="label">Page surface</span>
+          <span class="hex">#09030A</span>
         </div>
         <div class="swatch">
           <div class="chip" style="background:#2D142C"></div>
-          <span class="label">Panel</span>
+          <span class="role">Panel</span>
+          <span class="label">Elevated card</span>
           <span class="hex">#2D142C</span>
         </div>
         <div class="swatch">
-          <div class="chip" style="background:#EE4541"></div>
-          <span class="label">Bright Red</span>
-          <span class="hex">#EE4541</span>
+          <div class="chip" style="background:#530B32"></div>
+          <span class="role">Border</span>
+          <span class="label">Subtle divider</span>
+          <span class="hex">#530B32</span>
         </div>
         <div class="swatch">
-          <div class="chip" style="background:#09030a"></div>
-          <span class="label">Background</span>
-          <span class="hex">#09030A</span>
+          <div class="chip" style="background:#811339"></div>
+          <span class="role">Secondary</span>
+          <span class="label">Dim accent</span>
+          <span class="hex">#811339</span>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#CB2943"></div>
+          <span class="role">Primary</span>
+          <span class="label">Brand / actions</span>
+          <span class="hex">#CB2943</span>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#EE4541"></div>
+          <span class="role">Accent</span>
+          <span class="label">Hover / highlight</span>
+          <span class="hex">#EE4541</span>
         </div>
       </div>
     </section>
@@ -118,17 +124,17 @@
 
           <div class="sub-rule" style="margin-top:32px">Code Links</div>
           <div class="badge-row">
-            <a class="codelink" href="#" onclick="return false"><span class="arrow">↗</span>index.html</a>
-            <a class="codelink" href="#" onclick="return false"><span class="arrow">↗</span>styles.css</a>
-            <a class="codelink" href="#" onclick="return false"><span class="arrow">↗</span>script.js</a>
+            <a class="codelink" href="https://github.com/pranavgupta55/ForgeDesign/blob/main/index.html" target="_blank" rel="noopener noreferrer"><span class="arrow">↗</span>index.html</a>
+            <a class="codelink" href="https://github.com/pranavgupta55/ForgeDesign/blob/main/styles.css" target="_blank" rel="noopener noreferrer"><span class="arrow">↗</span>styles.css</a>
+            <a class="codelink" href="https://github.com/pranavgupta55/ForgeDesign/blob/main/script.js" target="_blank" rel="noopener noreferrer"><span class="arrow">↗</span>script.js</a>
           </div>
 
           <div class="sub-rule" style="margin-top:32px">Level Filter</div>
-          <div class="check-grid">
-            <label><input type="checkbox" checked /> <span>L1 · Surface</span></label>
-            <label><input type="checkbox" checked /> <span>L2 · Domain</span></label>
-            <label><input type="checkbox" /> <span>L3 · Internal</span></label>
-            <label><input type="checkbox" /> <span>L4 · Archived</span></label>
+          <div class="filter-row" id="level-filter">
+            <button class="filter-chip active" data-level="L1">L1 · Surface<span class="chip-count">12</span></button>
+            <button class="filter-chip active" data-level="L2">L2 · Domain<span class="chip-count">28</span></button>
+            <button class="filter-chip" data-level="L3">L3 · Internal<span class="chip-count">9</span></button>
+            <button class="filter-chip" data-level="L4">L4 · Archived<span class="chip-count">4</span></button>
           </div>
         </div>
 
@@ -139,10 +145,13 @@
               <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
             </button>
             <button class="icon-btn" aria-label="Check">
-              <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L20 6.5"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg>
             </button>
-            <button class="icon-btn" aria-label="Share">
-              <svg viewBox="0 0 24 24"><path d="M5 14V11a5 5 0 0 1 5-5h8"/><path d="M14 2l4 4-4 4"/></svg>
+            <button class="icon-btn" aria-label="Redirect">
+              <svg viewBox="0 0 24 24"><path d="M5 17v-3a4 4 0 0 1 4-4h10"/><path d="M15 7l4 4-4 4"/></svg>
+            </button>
+            <button class="icon-btn" aria-label="Upturned">
+              <svg viewBox="0 0 24 24"><path d="M3 19h11a3 3 0 0 0 3-3V9"/><path d="M13 9l4-4 4 4"/></svg>
             </button>
             <button class="icon-btn" aria-label="Down">
               <svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12l7 7 7-7"/></svg>
@@ -151,7 +160,10 @@
               <svg viewBox="0 0 24 24"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
             </button>
             <button class="icon-btn" aria-label="Delete">
-              <svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 7V4h4v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+            </button>
+            <button class="icon-btn" aria-label="Downturned">
+              <svg viewBox="0 0 24 24"><path d="M3 5h11a3 3 0 0 1 3 3v7"/><path d="M13 15l4 4 4-4"/></svg>
             </button>
           </div>
         </div>
