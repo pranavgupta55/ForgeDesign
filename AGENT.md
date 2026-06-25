@@ -267,12 +267,14 @@ The runner lives at `tools/screenshots.mjs`. Add a new `TARGETS` entry
 to capture a new section — each is `{ name, full: true }` (full-page) or
 `{ name, sel: '#selector' }` (element bounding-box).
 
-**Enforced by CI.** `.github/workflows/screenshots.yml` runs on every
-push and PR that touches `index.html` / `styles.css` / `script.js` /
-the runner. It regenerates screenshots and **fails the build if the
-committed PNGs are out of sync**. The freshly-rendered PNGs are uploaded
-as a workflow artifact so you can download them straight onto your
-branch if you forgot to re-run locally.
+**CI auto-commits.** `.github/workflows/screenshots.yml` runs on every
+push to `main` that touches a rendered file. It regenerates the PNGs on
+Linux Chromium and **auto-commits them with `[skip ci]`** so the repo's
+`screenshots/` always reflects the latest HTML, rendered by the same
+Chromium build. Local screenshots are for preview only — Linux and
+macOS Chromium hint fonts differently, so cross-OS pixel diffs are
+expected and harmless. The bot commit overwrites your local PNGs after
+push.
 
 ## When in doubt
 

@@ -68,16 +68,19 @@ screenshots/    PNGs generated from index.html (do not hand-edit)
 ## Regenerating screenshots
 
 The PNGs under `screenshots/` are produced by Playwright against the live
-HTML. Always re-run after a visual change so the README stays in sync:
+HTML. **CI is the source of truth** — after any push to `main` that
+touches a rendered file (`index.html` / `styles.css` / `script.js` /
+`tools/screenshots.mjs`), `.github/workflows/screenshots.yml`
+regenerates them on Linux Chromium and auto-commits the result with
+`[skip ci]`.
+
+Run locally for preview only:
 
 ```sh
 npm install            # one-time — installs Playwright + Chromium
 npm run screenshots    # writes 11 PNGs into screenshots/
 ```
 
-Enforced by CI: `.github/workflows/screenshots.yml` regenerates screenshots
-on every push/PR that touches the rendered files and fails the build if
-the committed PNGs don't match. The freshly-rendered PNGs are uploaded as
-an artifact when CI fails, so contributors can download them straight onto
-the branch if they forgot to re-run locally. **Don't merge with a red
-screenshot job.**
+Local PNGs may differ slightly from the committed ones because macOS and
+Linux Chromium hint fonts differently — don't worry about it; the next
+push will overwrite them with the canonical Linux-rendered set.

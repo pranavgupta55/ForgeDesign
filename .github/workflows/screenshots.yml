@@ -1,11 +1,18 @@
-name: Screenshot sync check
+name: Screenshot sync
 
-# Runs on every push and PR. Regenerates screenshots from index.html and
-# fails if the committed PNGs are out of date — forces contributors to
-# re-run `npm run screenshots` locally and commit the result.
+# Runs on every push to main that touches a rendered file. Regenerates
+# the PNGs from index.html and auto-commits them so the repo's
+# screenshots are always rendered by the same Chromium build.
 #
-# Only watches the files that affect rendering, so doc-only changes
-# (README / AGENT.md) don't burn CI minutes.
+# Why auto-commit instead of fail-on-diff: Playwright renders fonts and
+# anti-aliasing slightly differently on macOS vs Linux. A "regenerate +
+# compare to committed" check fails on every push when the contributor's
+# OS differs from the runner's, even with no real visual change.
+# Treating CI as the source of truth fixes that — local screenshots are
+# only used for preview, the committed ones come from Linux Chromium.
+#
+# PRs run the same job to verify the runner still works, but skip the
+# auto-commit step (PR branches from forks have read-only tokens).
 
 on:
   push:
@@ -16,6 +23,7 @@ on:
       - 'script.js'
       - 'tools/screenshots.mjs'
       - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/screenshots.yml'
   pull_request:
     paths:
@@ -24,43 +32,64 @@ on:
       - 'script.js'
       - 'tools/screenshots.mjs'
       - 'package.json'
+      - 'package-lock.json'
+
+permissions:
+  contents: write
 
 jobs:
-  check:
+  regenerate:
     runs-on: ubuntu-latest
+    # Belt + suspenders against an infinite-loop: don't re-trigger on our
+    # own bot commits. The [skip ci] tag in the commit message is the
+    # primary safeguard; this is the secondary.
+    if: github.actor != 'github-actions[bot]'
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Use the default GITHUB_TOKEN, which has write access when
+          # `permissions: contents: write` is set above.
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # We need full history for `git push` to fast-forward cleanly.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
 
-      - name: Install deps (auto-installs Chromium via postinstall)
+      - name: Install deps (Chromium auto-pulls via postinstall)
         run: npm ci
 
       - name: Regenerate screenshots
         run: npm run screenshots
 
-      - name: Verify committed PNGs match regenerated output
+      - name: Commit + push if anything changed (push to main only)
+        if: github.event_name == 'push'
+        run: |
+          if git diff --quiet -- screenshots/; then
+            echo "✓ Screenshots already in sync; nothing to commit."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add screenshots/
+          git commit -m "ci: regenerate screenshots [skip ci]"
+          git push
+
+      - name: PR — surface drift without committing
+        if: github.event_name == 'pull_request'
         run: |
           if ! git diff --quiet -- screenshots/; then
-            echo ""
-            echo "::error::Screenshots are out of sync with index.html / styles.css / script.js."
-            echo "Run 'npm install && npm run screenshots' locally and commit the screenshots/ folder."
-            echo ""
-            echo "Files changed:"
-            git diff --name-only -- screenshots/
-            exit 1
+            echo "::notice::Screenshots would be regenerated on merge. The committed PNGs are slightly different from this branch's render — that's normal cross-OS drift. The push-to-main workflow will refresh them after merge."
+            git diff --name-only -- screenshots/ | sed 's/^/  - /'
+          else
+            echo "✓ No screenshot drift."
           fi
-          echo "✓ Screenshots are in sync."
 
-      # On a hard mismatch, upload the freshly-rendered PNGs so the author
-      # can download them and commit without re-running locally.
-      - name: Upload fresh screenshots on failure
-        if: failure()
+      - name: Upload regenerated PNGs as artifact
         uses: actions/upload-artifact@v4
         with:
           name: regenerated-screenshots
           path: screenshots/
-          retention-days: 7
+          retention-days: 14
