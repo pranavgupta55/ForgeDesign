@@ -12,6 +12,9 @@
   --accent-red-deep:   #530B32;
   --accent-red-tint:   rgba(203, 41, 67, 0.12);
 
+  --accent-green:      #73C990;  /* status: done / passing */
+  --accent-orange:     #C87A3A;  /* status: custom tag / no-project */
+
   --text-main:  #ece6dc;
   --text-dim:   #9b8a92;
   --text-mute:  #5a4a55;
@@ -216,14 +219,13 @@ section {
 .type-card .sample.mono  { font-family: var(--font-mono);  font-size: 13px; color: #d9a8b8; }
 @media (max-width: 720px) { .type-grid { grid-template-columns: 1fr; } }
 
-/* Color swatches */
+/* Color swatches — two rows of four (surfaces row + accents row). */
 .swatch-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 20px;
 }
-@media (max-width: 900px) { .swatch-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 480px) { .swatch-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px) { .swatch-grid { grid-template-columns: repeat(2, 1fr); } }
 .swatch {
   display: flex; flex-direction: column; gap: 8px;
 }
