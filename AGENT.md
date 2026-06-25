@@ -42,8 +42,10 @@ the template.
   chips, badges, cards, dots. The 7×7 status marker is a **square**, never
   a circle.
 - **Plum-into-red dark palette.** Background is `#09030a` (never `#000`).
-  Reds carry action; plums carry surface. No bright greens or blues except
-  the single `--accent-green` token used for "done" status.
+  Reds carry action; plums carry surface. The chrome stays red/plum-only —
+  the secondary palette (`--accent-blue/teal/violet/mauve/olive/peach`) is
+  reserved for **chart series and multi-bucket tags**, never for buttons,
+  nav, status, or surfaces. `--accent-green` remains the sole "done" token.
 - **Dense, minimal chrome.** 1 px borders, no shadows, no gradients, no
   rounded fills. Two border weights: `--border-subtle` (rgba white 6 %) for
   low-contrast separators, `--border-strong` (14 %) for emphasis dividers.
@@ -93,6 +95,16 @@ beside the earth-tone trio without competing.
 | `--accent-mauve`  | `#AA767C` | series D |
 | `--accent-olive`  | `#656839` | series E |
 | `--accent-peach`  | `#FCD0A1` | series F · light highlight |
+
+Usage notes:
+- `--accent-blue #335C81` sits near 3:1 against `--bg-base`. Safe for chart
+  fills and large swatches; **don't use it for small text** — pair text with
+  `--text-main` over a blue fill, not blue text on the base.
+- Under red-green CVD, `--accent-olive` (~115 deg) and `--accent-mauve`
+  (~15 deg) both shift toward muddy yellow-brown. They sit at different
+  lightness tiers (L≈0.45 vs L≈0.60) so they remain distinguishable, but
+  **don't place olive and mauve adjacent in the same legend** — split them
+  with a cool (blue / teal / violet) between for safety.
 
 ## Spacing & motion
 
@@ -259,7 +271,7 @@ not hand-edit. View these in order before generating any CSS:
 |---|---|
 | `overview.png`        | full page top to bottom |
 | `typography.png`      | the type triad with samples |
-| `colors.png`          | 10-token swatch grid (4 × 2) |
+| `colors.png`          | 9 primary + 6 secondary swatches, two grids |
 | `components.png`      | badges, code links, level filter, icon grid |
 | `layout.png`          | all layout primitives, top to bottom |
 | `stats-row.png`       | live-state numeric stats |
