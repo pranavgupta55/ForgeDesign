@@ -33,6 +33,8 @@ on:
       - 'tools/screenshots.mjs'
       - 'package.json'
       - 'package-lock.json'
+  # Manual trigger for "regenerate even though no source changed."
+  workflow_dispatch:
 
 permissions:
   contents: write
