@@ -14,7 +14,7 @@ in a browser; no build step.
 | Section | Screenshot |
 |---|---|
 | Typography (3 typefaces, strict roles) | [`screenshots/typography.png`](./screenshots/typography.png) |
-| Color palette (10 tokens, 4×2 grid) | [`screenshots/colors.png`](./screenshots/colors.png) |
+| Color palette (9 primary + 6 secondary tokens) | [`screenshots/colors.png`](./screenshots/colors.png) |
 | Components (badges, filters, icon grid) | [`screenshots/components.png`](./screenshots/components.png) |
 | Layout primitives (stats / filter / windows / clusters / dots) | [`screenshots/layout.png`](./screenshots/layout.png) |
 | Section windows (live demo, 4 buckets) | [`screenshots/section-windows.png`](./screenshots/section-windows.png) |
@@ -34,8 +34,10 @@ screenshot tool.
 - **Surfaces:** sharp corners everywhere (no `border-radius`), thin 1 px
   borders, no shadows, no gradients.
 - **Animations:** windowed slide transitions on `cubic-bezier(0.4, 0, 0.2, 1)`.
-- **Palette:** 10-token red / plum / status system (canonical values in
-  [`styles.css :root`](./styles.css)):
+- **Palette:** red / plum / status primary + a 6-color dashboard secondary
+  (canonical values in [`styles.css :root`](./styles.css)):
+
+  Primary (red / plum / status):
 
   | token | hex | role |
   |---|---|---|
@@ -50,6 +52,21 @@ screenshot tool.
   | `--accent-orange`     | `#C87A3A` | pending / custom / no-project |
   | `--accent-grey`       | `#7a6a5d` | archived (recoverable) |
   | `--text-main/dim/mute` | `#ece6dc / #9b8a92 / #5a4a55` | text tiers |
+
+  Secondary (dashboard categorical fills — chart series, multi-bucket tags):
+
+  | token | hex | role |
+  |---|---|---|
+  | `--accent-blue`   | `#335C81` | series A · info |
+  | `--accent-teal`   | `#177E89` | series B |
+  | `--accent-violet` | `#998FC7` | series C |
+  | `--accent-mauve`  | `#AA767C` | series D |
+  | `--accent-olive`  | `#656839` | series E |
+  | `--accent-peach`  | `#FCD0A1` | series F · light highlight |
+
+  The secondary set is split-complementary to the red brand axis (3 cool,
+  3 warm), muted-leaning so it sits beside the earth-tone supporting trio
+  without competing, with three lightness tiers for CVD-safe alternation.
 
 Inspired by [DitherTemplate](https://github.com/pranavgupta55/DitherTemplate)
 and the Scribe / Tasks dashboards.
